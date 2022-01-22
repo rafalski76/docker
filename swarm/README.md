@@ -9,6 +9,7 @@ docker node inspect worker1 --pretty
 docker node inspect worker2 --pretty
 
 docker service create -p 80:80 --replicas 3 --name helloworld rstarmer/hostname:latest
+docker stack deploy -c app/docker-compose.yml hostname-app
 http://192.168.10.2:80/
 ```
 

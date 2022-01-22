@@ -1,4 +1,4 @@
-## Docker Swarm
+# Docker Swarm
 
 ```
 vagrant up
@@ -12,7 +12,7 @@ docker service create -p 80:80 --replicas 3 --name helloworld rstarmer/hostname:
 http://192.168.10.2:80/
 ```
 
-# Instalacja SwarmPit
+## Instalacja SwarmPit
 
 ```
 git clone https://github.com/swarmpit/swarmpit -b master
@@ -20,7 +20,7 @@ docker stack deploy -c swarmpit/docker-compose.yml swarmpit
 http://192.168.10.2:888/
 ```
 
-# Instalacja Portainer
+## Instalacja Portainer
 
 ```
 curl -L https://downloads.portainer.io/portainer-agent-stack.yml -o portainer-agent-stack.yml

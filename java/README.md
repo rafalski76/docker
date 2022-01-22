@@ -1,4 +1,4 @@
-# JAVA
+# Java
 
 ```
 docker build -t java-app:1.0 .

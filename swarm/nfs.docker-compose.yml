@@ -12,4 +12,8 @@ services:
       - /data/nfs-storage:/data
     ports:
       - 2049:2049
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager   
  

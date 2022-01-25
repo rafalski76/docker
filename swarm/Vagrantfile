@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
       end 
 	  i.vm.provision "shell", inline: <<-SHELL
 	    apt-get update
-		apt-get install -y nfs-common
+	    apt-get install -y nfs-common
 	  SHELL
       i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{manager_ip}"
       i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token"

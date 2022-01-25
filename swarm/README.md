@@ -28,3 +28,10 @@ curl -L https://downloads.portainer.io/portainer-agent-stack.yml -o portainer-ag
 docker stack deploy -c portainer-agent-stack.yml portainer	
 https://192.168.10.2:9443
 ```	
+
+## Uruchomienie NFS
+```
+https://blog.ruanbekker.com/blog/2020/09/20/setup-a-nfs-server-with-docker/
+docker-compose -f nfs.docker-compose.yml up -d
+```
+

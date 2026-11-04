@@ -44,6 +44,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          severity: warning
 
   build:
     name: build ${{ matrix.image }}

@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.define "manager" do |i|
-      i.vm.box = "ubuntu/focal64"
+      i.vm.box = "cloud-image/ubuntu-24.04"
       i.vm.hostname = "manager"
       i.vm.network "forwarded_port", guest: 80, host: 10080
 	  i.vm.network "forwarded_port", guest: 888, host: 10888
@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
 
   instances.each do |instance| 
     config.vm.define instance[:name] do |i|
-      i.vm.box = "ubuntu/focal64"
+      i.vm.box = "cloud-image/ubuntu-24.04"
       i.vm.hostname = instance[:name]
       i.vm.network "private_network", ip: "#{instance[:ip]}"
       i.vm.provision :docker
@@ -64,4 +64,4 @@ Vagrant.configure("2") do |config|
       i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{manager_ip}:2377"
     end 
   end
-end
+end

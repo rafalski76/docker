@@ -1,5 +1,3 @@
-version: '3.3'
-
 services:
   nfs:
     image: itsthenetwork/nfs-server-alpine:12
@@ -23,5 +21,4 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.role == manager] 
- 
+        constraints: [node.role == manager]

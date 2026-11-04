@@ -1,0 +1,8 @@
+ignored:
+  - DL3008   # przypinanie wersji pakietów apt (obrazy edukacyjne)
+  - DL3018   # przypinanie wersji pakietów apk
+  - DL3066   # nienumeryczny użytkownik (www-data)
+  - DL3002   # LMS wymaga roota dla Apache w entrypoincie
+  - DL4006   # pipefail
+  - DL4001   # curl + wget
+  - SC2086

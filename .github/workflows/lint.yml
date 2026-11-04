@@ -1,0 +1,59 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile: [java/Dockerfile, lms/Dockerfile, php/Dockerfile, python/Dockerfile]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+          config: .hadolint.yaml
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: pip install yamllint
+      - run: yamllint -c .yamllint.yml .
+
+  compose-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: |
+          for f in lms/docker-compose.yml swarm/app/docker-compose.yml swarm/*.docker-compose.yml; do
+            echo "== $f"
+            docker compose -f "$f" config --quiet
+          done
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          severity: warning
+
+  build:
+    name: build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [java, php, python, lms]
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t ${{ matrix.image }}-test ${{ matrix.image }}

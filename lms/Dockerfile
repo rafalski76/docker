@@ -1,24 +1,32 @@
-FROM debian:10-slim as builder
+FROM debian:13-slim
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANG en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=en_US.UTF-8
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     apache2 \
-    curl \
+    ca-certificates \
     composer \
+    curl \
     gettext-base \
+    git \
+    libapache2-mod-php \
     locales \
-    php7.3 \
-    php7.3-bcmath \
-    php7.3-gd \
-    php7.3-gmp \
-    php7.3-soap \
-    php7.3-xml \
-    php7.3-zip \
+    php \
+    php-bcmath \
+    php-cli \
+    php-curl \
+    php-gd \
+    php-gmp \
+    php-intl \
+    php-mbstring \
     php-mysql \
+    php-soap \
+    php-xml \
+    php-zip \
+    unzip \
     wget \
-	&& apt-get -s clean && apt-get autoremove 
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales \
     && update-locale LANG=en_US.UTF-8
@@ -31,7 +39,10 @@ USER www-data
 
 RUN APP_VERSION=`curl --silent "https://api.github.com/repositories/3524851/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'` \
     && wget -qO- https://github.com/chilek/lms/archive/refs/tags/${APP_VERSION}.tar.gz | tar -zx -f - -C /usr/share/lms --strip-components=1
-RUN composer install
+# Composer 2.2+ blokuje wtyczki bez jawnej zgody; LMS wymaga tych dwóch
+RUN composer config --no-plugins allow-plugins.composer/installers true \
+    && composer config --no-plugins allow-plugins.oomphinc/composer-installers-extender true \
+    && composer install --no-dev --no-interaction
 
 USER root
 
